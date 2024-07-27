@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Itinerary</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body class="bg-gray-100 p-4">
+  <div class="max-w-md mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Travel Itinerary</h1>
+          <div class="mb-4 flex items-center">
+        <label for="location" class="mr-4">Location:</label>
+        <input type="text" id="location" name="location" class="border rounded px-2 py-1 flex-1">
+      </div>
+    <div id="itinerary-container">
+      <div class="mb-4 flex items-center">
+        <div class="mr-4 w-1/2">
+          <label for="time" class="block font-medium mb-2">Time</label>
+          <input type="time" id="time" name="time" class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter time">
+        </div>
+        <div class="w-1/2">
+          <label for="item" class="block font-medium mb-2">Item</label>
+          <input type="text" id="item" name="item" class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter item">
+        </div>
+      </div>
+    </div>
+    <button id="add-item" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md mb-4">Add Item</button>
+    <button id="generate-itinerary" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md">Generate Itinerary</button>
+    <button onclick="captureScreen" id="generate-image" class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-md">Generate Image</button>
+  <div id="target"></div>
+  </div>
+
+
+
+  <script>
+    const container = document.getElementById('itinerary-container');
+    const addItemButton = document.getElementById('add-item');
+    const generateButton = document.getElementById('generate-itinerary');
+    const targetContainer = document.getElementById('target');
+
+   const createNewItem = () => {
+  const newItem = document.createElement('div');
+  newItem.classList.add('mb-4', 'flex', 'items-center');
+  newItem.innerHTML = document.querySelector('#itinerary-container .mb-4').innerHTML;
+  return newItem;
+};
+
+    addItemButton.addEventListener('click', () => {
+      const newItem = createNewItem();
+      container.appendChild(newItem);
+    });
+
+    generateButton.addEventListener('click', () => {
+      const timeInputs = document.querySelectorAll('#time');
+      const itemInputs = document.querySelectorAll('#item');
+      const itinerary = [];
+
+      for (let i = 0; i < timeInputs.length; i++) {
+        const time = timeInputs[i].value;
+        const item = itemInputs[i].value;
+        if (time && item) {
+          itinerary.push({ time, item });
+        }
+      }
+
+      const itineraryContainer = document.createElement('div');
+            // タイトルの取得
+      const titleInput = document.getElementById('location');
+      const title = titleInput.value;
+
+      // タイトルの描写
+      const titleElement = document.createElement('div');
+      titleElement.classList.add("mt-8", "text-center", "p-4", "text-lg","bg-blue-500")
+      titleElement.textContent = title;
+      target.appendChild(titleElement);
+      
+      
+    
+      itineraryContainer.classList.add('mt-8', 'relative');
+
+      itinerary.forEach(({ time, item }, index) => {
+        const timelineItem = document.createElement('div');
+        timelineItem.classList.add('relative', 'mb-8', 'flex', 'items-center');
+        timelineItem.innerHTML = `
+          <div class="w-6 h-6 bg-blue-500 rounded-full mr-4"></div>
+          <div class="flex-1">
+            <h3 class="font-medium">${time}</h3>
+            <p>${item}</p>
+          </div>
+        `;
+        itineraryContainer.appendChild(timelineItem);
+
+        if (index > 0) {
+          const connector = document.createElement('div');
+          connector.classList.add('absolute', 'top-0', 'bottom-0', 'left-3', 'border-l', 'border-blue-500');
+          itineraryContainer.insertBefore(connector, timelineItem);
+        }
+      });
+
+      targetContainer.appendChild(itineraryContainer);
+    });
+
+//*********** 
+//キャプチャ  
+//************
+function captureScreen() {
+      html2canvas(document.getElementById('target')).then(function(canvas) {
+        // Canvas要素を作成
+        var img = canvas.toDataURL("image/png");
+        var link = document.createElement('a');
+        link.download = 'screenshot.png';
+        link.href = img;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    }
+
+
+
+  </script>
+<style>
+#target {
+  width:500px;
+  border: solid #666;
+  padding:10px;
+}
+
+</style>
+</body>
+</html>
