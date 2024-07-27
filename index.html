@@ -28,7 +28,7 @@
     </div>
     <button id="add-item" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md mb-4">Add Item</button>
     <button id="generate-itinerary" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md">Generate Itinerary</button>
-    <button onclick="captureScreen" id="generate-image" class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-md">Generate Image</button>
+    <button onclick="captureScreen()" id="generate-image" class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-md">Generate Image</button>
   <div id="target"></div>
   </div>
 
@@ -127,7 +127,14 @@ function captureScreen() {
   border: solid #666;
   padding:10px;
 }
-
+/**
+Tailwind CSSのプレフライトスタイルがimgタグのdisplay属性をblockに設定するため、html2canvasが画像を生成する際にテキストの位置がずれる可能性があります。
+この問題を解決するためには、html2canvasが画像を生成する前にimgタグのdisplay属性を元に戻すことができます。
+*/
+img {
+  display: inline;
+}
+  
 </style>
 </body>
 </html>
