@@ -10,6 +10,7 @@
 <body class="bg-gray-100 p-4">
   <div class="max-w-md mx-auto">
     <h1 class="text-2xl font-bold mb-4">Travel Itinerary</h1>
+    <div id="result"></div>
           <div class="mb-4 flex items-center">
         <label for="location" class="mr-4">Location:</label>
         <input type="text" id="location" name="location" class="border rounded px-2 py-1 flex-1">
@@ -113,8 +114,10 @@ function captureScreen() {
         link.download = 'screenshot.png';
         link.href = img;
         document.body.appendChild(link);
-        link.click();
+        //link.click();
         document.body.removeChild(link);
+        //スマホ用に画像を生成する
+        document.getElementById('result').appendChild(canvas);
       });
     }
 
